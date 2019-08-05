@@ -1,27 +1,31 @@
-from tkinter import *
+import pygame
 
-master = Tk()
+pygame.init()
+screen = pygame.display.set_mode((400, 300))
+done = False
+is_blue = True
+x = 30
+y = 30
 
-def food():
-    print('You made it to food')
+clock = pygame.time.Clock()
 
-def bev():
-    print('You made it to bev')
-
-def back():
-    print('You made it to back')
-
-def callback():
-    fbb = Tk()
-    fod = Button(fbb, text = "FOOD", command=food)
-    beva = Button(fbb, text = "BEV", command=bev)
-    bac = Button(fbb, text = "BACK", command=back)
-    fod.pack()
-    beva.pack()
-    bac.pack()
-    print ("click!")
-
-b = Button(master, text="OK", command=callback)
-b.pack()
-
-mainloop()
+while not done:
+        for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                        done = True
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                        is_blue = not is_blue
+        
+        pressed = pygame.key.get_pressed()
+        if pressed[pygame.K_UP]: y -= 3
+        if pressed[pygame.K_DOWN]: y += 3
+        if pressed[pygame.K_LEFT]: x -= 3
+        if pressed[pygame.K_RIGHT]: x += 3
+        
+        screen.fill((0, 0, 0))
+        if is_blue: color = (0, 128, 255)
+        else: color = (255, 100, 0)
+        pygame.draw.rect(screen, color, pygame.Rect(x, y, 60, 60))
+        
+        pygame.display.flip()
+        clock.tick(120)
