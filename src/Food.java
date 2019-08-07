@@ -1,12 +1,16 @@
+import javax.swing.*;
 import java.util.List;
 
 public class Food {
+    JButton button;
     double amt;
     String name;
 
-    Food(String name, double amt){
+    Food(String name, double amt, int x, int y, int w, int h){
         this.name = name;
         this.amt = amt;
+        this.button = new JButton(name);
+        button.setBounds(x, y, w, h);
     }
 
     public double getAmt() {
@@ -27,5 +31,9 @@ public class Food {
 
     public static void printFood(List<Food> food) {
         for(Food f: food) System.out.println(f.getName());
+    }
+
+    public JButton getButton(){
+        return this.button;
     }
 }

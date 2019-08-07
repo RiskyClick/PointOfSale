@@ -1,17 +1,33 @@
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Seats {
 
+    JButton button;
     String name;
     double amt;
     boolean vacant;
-    static List<String> products = new ArrayList<>();
+    List<String> products = new ArrayList<>();
 
-    Seats(String name, double amt, boolean vacant){
+    Seats(String name, double amt, boolean vacant, int x, int y, int w, int h){
         this.name = name;
         this.amt = amt;
         this.vacant = vacant;
+        this.button = new JButton(name);
+        button.setBounds(x, y, w, h);
+    }
+
+    public JButton getButton(){
+        return this.button;
+    }
+
+    public List<String> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<String> products) {
+        this.products = products;
     }
 
     public void addToBill(String product, double amt){
