@@ -9,20 +9,17 @@ public class UserInterface extends JFrame implements ActionListener {
     boolean foodMenu = false;
     boolean drinkMenu = false;
     boolean seatMenu = true;
+    String choice;
 
     UserInterface(List<Seats> seats, List<Food> food, List<Booze> booze) {
 
         setTitle("POS");
-
-        displayMenu();
-
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         setSize(1000, 750);
         setLayout(null);
-        setVisible(true);
-    }
 
-    private void displayMenu() {
+        setVisible(true);
         if(seatMenu){
             for(int i = 0; i < seats.size(); i++){
                 add(seats.get(i).getButton());
@@ -52,15 +49,15 @@ public class UserInterface extends JFrame implements ActionListener {
                 f.getButton().setVisible(false);
             }
         }
+
+
     }
+
+
+
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        String clicked = actionEvent.getActionCommand();
-        if(clicked.equals("Bar1")){
-            seatMenu = false;
-            drinkMenu = true;
-            displayMenu();
-        }
+        choice = actionEvent.getActionCommand();
     }
 }

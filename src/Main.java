@@ -10,7 +10,7 @@ import static javafx.application.Application.launch;
 public class Main {
 
     public static void main(String[] args) {
-        List<Seats> seats = new ArrayList<Seats>();
+        List<Seats> seats = new ArrayList<>();
         List<Food> food = new ArrayList<>();
         List<Booze> booze = new ArrayList<>();
 
