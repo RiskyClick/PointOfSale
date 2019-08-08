@@ -1,159 +1,108 @@
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 
-
-public class UserInterface extends JFrame implements ActionListener{
+public class UserInterface extends JFrame implements ActionListener {
 
     List<Seats> seats;
     List<Food> food;
     List<Booze> booze;
-    boolean foodMenu = false;
-    boolean drinkMenu = false;
-    boolean seatMenu = true;
+    List<Others> otherButtons;
 
-    UserInterface(List<Seats> seats, List<Food> food, List<Booze> booze) {
+    boolean showSeats = true;
+    JFrame frame= new JFrame("POS");
+
+
+
+    public UserInterface(List<Seats> seats, List<Food> food, List<Booze> booze, List<Others> otherButtons) {
+        this.seats = seats;
         this.booze = booze;
         this.food = food;
-        this.seats = seats;
-        setTitle("POS");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1000, 750);
-        setLayout(null);
-        setVisible(true);
-        displayButtens();
-
+        this.otherButtons = otherButtons;
+        frame.setTitle("POS");
+        frame.setSize(1000, 750);
+        frame.setVisible(true);
+        frame.setLayout(null);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        inService();
     }
 
-    private void displayButtens() {
-        System.out.println(seatMenu);
-        System.out.println(foodMenu);
-        System.out.println(drinkMenu);
-        if (seatMenu) {
+    private void inService() {
+        for(Others o: otherButtons){
+            frame.add(o.getButton());
+            o.getButton().addActionListener(this);
+            o.getButton().setVisible(true);
+        }
+        if(showSeats == true){
             for(Seats s: seats){
-                add(s.getButton());
+                frame.add(s.getButton());
                 s.getButton().addActionListener(this);
                 s.getButton().setVisible(true);
             }
-            for (Booze b : booze) {
+            for(Booze b: booze) {
                 b.getButton().setVisible(false);
             }
-            for (Food f : food) {
+            for(Food f: food) {
                 f.getButton().setVisible(false);
             }
-        } else if (drinkMenu) {
-            for(Booze b: booze){
-                add(b.getButton());
-                b.getButton().addActionListener(this);
-                b.getButton().setVisible(true);
-            }
-            for (Seats s : seats) {
+
+            }else{
+            for(Seats s: seats){
                 s.getButton().setVisible(false);
             }
-            for (Food f : food) {
-                f.getButton().setVisible(false);
+            for(Booze b: booze){
+                frame.add(b.getButton());
+                b.getButton().addActionListener(this);
+                b.getButton().setVisible(true);
+
             }
-        } else if (foodMenu) {
             for(Food f: food){
-                add(f.getButton());
+                frame.add(f.getButton());
                 f.getButton().addActionListener(this);
                 f.getButton().setVisible(true);
             }
-            for (Seats s : seats) {
-                s.getButton().setVisible(false);
-            }
-            for (Booze b : booze) {
-                b.getButton().setVisible(false);
-            }
-        } else {
-            for (Seats s : seats) {
-                s.getButton().setVisible(false);
-            }
-            for (Booze b : booze) {
-                b.getButton().setVisible(false);
-            }
-            for (Food f : food) {
-                f.getButton().setVisible(false);
-            }
         }
-    }
 
+    }
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        String choice = actionEvent.getActionCommand();
-        if(choice.equals("Bar1")){
-            seatMenu = false;
-            foodMenu = true;
-            drinkMenu = false;
+        String clicked = actionEvent.getActionCommand();
+        Seats buffer = null;
+
+        for(Seats s: seats){
+            if(clicked.equals(s.getName())){
+                buffer = s;
+                showSeats = false;
+                inService();
+            }
         }
-        displayButtens();
+        for(Food f: food){
+            if(clicked.equals((f.getName()))){
+                buffer.addToBill(f.getName(), f.getAmt());
+                inService();
+            }
+        }
+        for(Booze b: booze){
+            if(clicked.equals(b.getName())){
+                buffer.addToBill(b.getName(), b.getAmt());
+                inService();
+            }
+        }
+        if (clicked.equals("Back")){
+            showSeats = true;
+            inService();
+        }
+        else if(clicked.equals("Close")){
+            System.out.println("Need to work on payment");
+            inService();
+        }
+        else if(clicked.equals("Print")){
+            System.out.println(buffer.getProducts());
+            System.out.println(buffer.getAmt());
+            inService();
+        }
+
     }
-
-
-
-//    boolean foodMenu = false;
-//    boolean drinkMenu = false;
-//    boolean seatMenu = true;
-//    String choice;
-//    JFrame frame;
-//    Graphics g;
-//
-//    UserInterface(List<Seats> seats, List<Food> food, List<Booze> booze) {
-//
-//        setTitle("POS");
-//        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//
-//        setSize(1000, 750);
-//        setLayout(null);
-//
-//        setVisible(true);
-//
-//
-//
-//
-//    }
-//
-//
-//
-//
-//    @Override
-//    public void actionPerformed(ActionEvent actionEvent) {
-//        choice = actionEvent.getActionCommand();
-//        Display menu = new Display(choice);
-//        frame.update(g);
-//    }
-//
-//    @Override
-//    public void update(Graphics g){
-//        if (seatMenu) {
-//            for (int i = 0; i < seats.size(); i++) {
-//                add(seats.get(i).getButton());
-//                seats.get(i).getButton().addActionListener(this);
-//            }
-//        } else if (drinkMenu) {
-//            for (int i = 0; i < booze.size(); i++) {
-//                add(booze.get(i).getButton());
-//                booze.get(i).getButton().addActionListener(this);
-//            }
-//        } else if (foodMenu) {
-//            for (int i = 0; i < food.size(); i++) {
-//                add(food.get(i).getButton());
-//                food.get(i).getButton().addActionListener(this);
-//            }
-//        } else {
-//            for (Seats s : seats) {
-//                s.getButton().setVisible(false);
-//            }
-//            for (Booze b : booze) {
-//                b.getButton().setVisible(false);
-//            }
-//            for (Food f : food) {
-//                f.getButton().setVisible(false);
-//            }
-//        }
-//    }
 }
